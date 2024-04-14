@@ -10,7 +10,7 @@ const SPAWN_PROBABILITY: u8 = 6; // Enter a number n to have the probability be 
 const W_OS_FACTOR: f32 = 2.0;
 const H_OS_FACTOR: f32 = 1.925;
 
-const SQUARES: usize = 200;
+const SQUARES: usize = 400;
 const SQUARE_SIZE: f32 = WIDTH / SQUARES as f32;
 
 const GRID_THICKNESS: f32 = 0.15;
