@@ -1,6 +1,7 @@
 use ::rand::prelude::*;
 use macroquad::prelude::*;
 use std::cmp::*;
+use std::{thread, time};
 
 const WIDTH: f32 = 750.0;
 const HEIGHT: f32 = 750.0;
@@ -10,7 +11,7 @@ const SPAWN_PROBABILITY: u8 = 6; // Enter a number n to have the probability be 
 const W_OS_FACTOR: f32 = 2.0;
 const H_OS_FACTOR: f32 = 1.925;
 
-const SQUARES: usize = 400;
+const SQUARES: usize = 100;
 const SQUARE_SIZE: f32 = WIDTH / SQUARES as f32;
 
 const GRID_THICKNESS: f32 = 0.15;
@@ -110,6 +111,7 @@ fn update_grid(grid: &mut [[i32; SQUARES]; SQUARES]) {
 
 #[macroquad::main("Game of Life")]
 async fn main() {
+    let mut slow: bool = false;
     let mut grid: [[i32; SQUARES]; SQUARES] = [[0; SQUARES]; SQUARES];
     request_new_screen_size(WIDTH / W_OS_FACTOR, HEIGHT / H_OS_FACTOR);
     randomize_grid(&mut grid);
@@ -124,9 +126,26 @@ async fn main() {
         if is_key_pressed(KeyCode::Space) {
             reset(&mut grid);
             randomize_grid(&mut grid);
+        } else if is_key_pressed(KeyCode::S) {
+            slow = !slow;
         }
+
+        if slow {
+            draw_text(&"Speed:Slow", 5.0, 35.0, 35.0, WHITE);
+            thread::sleep(time::Duration::from_millis(100));
+        } else {
+            draw_text(&"Speed:Normal", 5.0, 35.0, 35.0, WHITE);
+        }
+
+        draw_text(
+            &"Press S to change game speed",
+            5.0,
+            HEIGHT - 15.0,
+            35.0,
+            WHITE,
+        );
+        draw_text(&"Press SPACE to reset", 5.0, HEIGHT - 35.0, 35.0, WHITE);
 
         next_frame().await;
     }
 }
-
